@@ -1,0 +1,23 @@
+language: python
+
+cache: pip
+
+python:
+    - "3.6"
+    - "3.6-dev"
+    - "3.7"
+    - "3.7-dev"
+    - "3.8"
+    - "3.8-dev"
+
+install:
+    - pip install poetry
+    - poetry install
+
+script:
+    - poetry run nosetests-3.4 --with-coverage --cover-package=pymispobjecttemplates -d
+    - poetry run mypy .
+
+after_success:
+    - poetry run codecov
+    - poetry run coveralls

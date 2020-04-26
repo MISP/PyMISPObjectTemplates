@@ -1,0 +1,3 @@
+[submodule "pymispobjecttemplates/data/misp-objects"]
+	path = pymispobjecttemplates/data/misp-objects
+	url = https://github.com/MISP/misp-objects.git
