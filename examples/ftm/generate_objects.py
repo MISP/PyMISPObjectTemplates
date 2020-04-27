@@ -57,7 +57,7 @@ class FTMSchemasToMISPObjects():
                 self.relationships.set_relationship(name=rel_name,
                                                     description=s['edge']['label'],
                                                     rel_format=['followthemoney'])
-            elif 'FollowTheMoney' not in relationship['format']:
+            elif 'followthemoney' not in relationship['format']:
                 # Add format in list
                 relationship['format'].append('followthemoney')
                 self.relationships.set_relationship(**relationship)
@@ -91,7 +91,7 @@ class FTMSchemasToMISPObjects():
 
         for object_relation, details in s['properties'].items():
             if 'type' not in details:
-                attribute_type = 'text'
+                attribute_type = 'string'
             elif details['type'] == 'entity':
                 # This is a relationship, will be represented appropriately in the script
                 continue
