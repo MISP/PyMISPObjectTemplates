@@ -64,8 +64,8 @@ class Template():
             new_template_version = new_template.pop('version')
 
             if existing_template == new_template:
-                print(f'No changes in {self.name}')
                 # No changes, no dump
+                print(f'No changes in {self.name}')
                 return
             elif new_template_version > existing_template_version:
                 new_template['version'] = new_template_version
@@ -144,20 +144,34 @@ class ObjectRelationships():
 
     def __init__(self):
         with (root_dir / 'relationships' / 'definition.json').open() as f:
-            rel = json.load(f)
-        self.version = rel['version']
-        self.description = rel['description']
-        self.uuid = rel['uuid']
-        self.name = rel['name']
-        self._values = rel['values']
+            _original_rel_file = json.load(f)
+        self.version = _original_rel_file['version']
+        self.description = _original_rel_file['description']
+        self.uuid = _original_rel_file['uuid']
+        self.name = _original_rel_file['name']
+        self._values = _original_rel_file['values']
 
     def to_dict(self):
         return {'version': self.version, 'description': self.description, 'uuid': self.uuid,
                 'name': self.name, 'values': self._values}
 
     def dump(self):
+        self.validate()
+        with (root_dir / 'relationships' / 'definition.json').open() as f:
+            _original_rel_file = json.load(f)
+        existing_rel_version = _original_rel_file.pop('version')
+        new_rel = self.to_dict()
+        new_rel.pop('version')
+
+        if _original_rel_file == new_rel:
+            # No changes, no dump
+            print(f'No changes in {self.name}')
+            return
+        else:
+            new_rel['version'] = existing_rel_version + 1
+
         with (root_dir / 'relationships' / 'definition.json').open('w') as f:
-            json.dump(self.to_dict(), f, indent=2, ensure_ascii=False, sort_keys=True)
+            json.dump(new_rel, f, indent=2, ensure_ascii=False, sort_keys=True)
 
     def validate(self):
         validate(instance=self.to_dict(), schema=schema_relationships)
@@ -170,8 +184,12 @@ class ObjectRelationships():
             return None
 
     def set_relationship(self, name: str, description: Optional[str]=None,
-                         rel_format: Optional[Union[str, List[str]]]=None):
+                         rel_format: Optional[Union[str, List[str]]]=None, **kwargs):
         exists = self.get_relationship(name)
+
+        if 'format'in kwargs:
+            # format is a reserved keyword in python, but it allows to do **relationship
+            rel_format = kwargs['format']
 
         for value in self._values:
             if value['name'] == name:
