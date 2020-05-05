@@ -200,6 +200,7 @@ class ObjectRelationships():
                         value['format'].append(rel_format)
                     else:
                         value['format'] = list(set().union(exists['format'], rel_format))  # type: ignore
+                value['format'] = sorted(value['format'])
                 break
         else:
             if not description:
@@ -211,4 +212,5 @@ class ObjectRelationships():
                 value['format'] = [rel_format]
             else:
                 value['format'] = rel_format
+            value['format'] = sorted(value['format'])
             self._values.append(value)

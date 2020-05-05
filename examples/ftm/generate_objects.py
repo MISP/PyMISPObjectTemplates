@@ -11,26 +11,26 @@ from pymispobjecttemplates import Template, ObjectRelationships
 import yaml
 
 types_mapping = {
-    'string': {'misp_attribute': 'text', "disable_correlation": True},
-    'text': {'misp_attribute': 'text', "disable_correlation": True},
-    'html': {'misp_attribute': 'text', "disable_correlation": True},
-    'topic': {'misp_attribute': 'text', "disable_correlation": False},
-    'name': {'misp_attribute': 'text', "disable_correlation": False},
-    'address': {'misp_attribute': 'text', "disable_correlation": False},
-    'checksum': {'misp_attribute': 'sha1', "disable_correlation": False},
-    'country': {'misp_attribute': 'text', "disable_correlation": False},
-    'date': {'misp_attribute': 'text', "disable_correlation": False},
-    'email': {'misp_attribute': 'email-src', "disable_correlation": False},
+    'string': {'misp_attribute': 'text', "disable_correlation": True, 'multiple': True},
+    'text': {'misp_attribute': 'text', "disable_correlation": True, 'multiple': True},
+    'html': {'misp_attribute': 'text', "disable_correlation": True, 'multiple': True},
+    'topic': {'misp_attribute': 'text', "disable_correlation": False, 'multiple': True},
+    'name': {'misp_attribute': 'text', "disable_correlation": False, 'multiple': True},
+    'address': {'misp_attribute': 'text', "disable_correlation": False, 'multiple': True},
+    'checksum': {'misp_attribute': 'sha1', "disable_correlation": False, 'multiple': True},
+    'country': {'misp_attribute': 'text', "disable_correlation": False, 'multiple': True},
+    'date': {'misp_attribute': 'text', "disable_correlation": False, 'multiple': True},
+    'email': {'misp_attribute': 'email-src', "disable_correlation": False, 'multiple': True},
     # 'entity': this is a relationship
-    'iban': {'misp_attribute': 'iban', "disable_correlation": False},
-    'identifier': {'misp_attribute': 'text', "disable_correlation": False},
-    'ip': {'misp_attribute': 'ip-src', "disable_correlation": False},
-    'json': {'misp_attribute': 'text', "disable_correlation": True},
-    'language': {'misp_attribute': 'text', "disable_correlation": True},
-    'mimetype': {'misp_attribute': 'mime-type', "disable_correlation": True},
-    'number': {'misp_attribute': 'float', "disable_correlation": True},
-    'phone': {'misp_attribute': 'phone-number', "disable_correlation": False},
-    'url': {'misp_attribute': 'url', "disable_correlation": False}
+    'iban': {'misp_attribute': 'iban', "disable_correlation": False, 'multiple': True},
+    'identifier': {'misp_attribute': 'text', "disable_correlation": False, 'multiple': True},
+    'ip': {'misp_attribute': 'ip-src', "disable_correlation": False, 'multiple': True},
+    'json': {'misp_attribute': 'text', "disable_correlation": True, 'multiple': True},
+    'language': {'misp_attribute': 'text', "disable_correlation": True, 'multiple': True},
+    'mimetype': {'misp_attribute': 'mime-type', "disable_correlation": True, 'multiple': True},
+    'number': {'misp_attribute': 'float', "disable_correlation": True, 'multiple': True},
+    'phone': {'misp_attribute': 'phone-number', "disable_correlation": False, 'multiple': True},
+    'url': {'misp_attribute': 'url', "disable_correlation": False, 'multiple': True}
 }
 
 
@@ -137,7 +137,7 @@ class FTMSchemasToMISPObjects():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert Follow The Money schemas to MISP objects.')
-    parser.add_argument("-p", "--path", type=Path, help="Path to schemas")
+    parser.add_argument("-p", "--path", required=True, type=Path, help="Path to schemas")
     args = parser.parse_args()
 
     converter = FTMSchemasToMISPObjects(args.path)
